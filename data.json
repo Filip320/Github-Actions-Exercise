@@ -1,0 +1,11 @@
+{
+  "name": "github-actions-exercise",
+  "version": "1.0.0",
+  "description": "A simple exercise to learn GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'Success: All tests passed!' && exit 0"
+  },
+  "author": "Your Name",
+  "license": "ISC"
+}

@@ -1,4 +1,4 @@
-name: Mojot Prv DevOps Workflow
+name: Mojot Napreden DevOps Workflow
 
 on:
   workflow_dispatch:
@@ -6,14 +6,27 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  # Еве го името што го гледаш во туторијалот
+  build-and-test:
+    name: Build & Test
     runs-on: ubuntu-latest
+
+    # Ова го креира делот Matrix Compatibility на GitHub
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
     steps:
-      - name: Chekor 1 - Kloniraj go kodot
+      - name: Kloniraj go kodot
         uses: actions/checkout@v4
 
-      - name: Chekor 2 - Pozdrav od Ubuntu
-        run: echo "Zdravo Filip! Ovaa poraka se pecati uspešno во виртуелната машина на GitHub!"
+      # Оваа акција ја поставува соодветната верзија од матрицата
+      - name: Postavi Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.matrix-version }}
 
-      - name: Chekor 3 - Proverka na sistemsko vreme
-        run: date
+      - name: Testiraj kompatibilnost
+        run: |
+          echo "Успешно тестирана компатибилност на Node.js верзија:"
+          node --version

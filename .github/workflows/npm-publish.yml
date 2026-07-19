@@ -6,27 +6,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # Еве го името што го гледаш во туторијалот
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
 
-    # Ова го креира делот Matrix Compatibility на GitHub
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [18, 20, 22]
 
     steps:
       - name: Kloniraj go kodot
         uses: actions/checkout@v4
 
-      # Оваа акција ја поставува соодветната верзија од матрицата
-      - name: Postavi Node.js ${{ matrix.node-version }}
+      - name: Postavi Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.matrix-version }}
+          node-version: ${{ matrix.node-version }}
 
-      - name: Testiraj kompatibilnost
-        run: |
-          echo "Успешно тестирана компатибилност на Node.js верзија:"
-          node --version
+      - name: Testiraj
+        run: node --version

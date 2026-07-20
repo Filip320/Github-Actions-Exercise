@@ -25,14 +25,14 @@ jobs:
       - name: Generiraj izvestaj
         run: echo "Generiranje na summary izvestaj..."
 
-  # 3. Втора гранка: matrix compatibility (со точно 1 job!)
+  # 3. Втора гранка: matrix compatibility (зависи САМО од build & test)
   matrix-compatibility:
     name: matrix compatibility
     needs: build-and-test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20] # Само една верзија -> точно 1 job во облачето
+        node-version: [18, 20, 22]
     steps:
       - name: Postavi Node.js
         uses: actions/setup-node@v4

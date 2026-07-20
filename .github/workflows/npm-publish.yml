@@ -1,4 +1,4 @@
-name: Mojot Napreden DevOps Workflow
+name: Mojot Workflow
 
 on:
   workflow_dispatch:
@@ -6,23 +6,26 @@ on:
     branches: [ "main" ]
 
 jobs:
+  # Прва главна задача (Главниот наслов)
   build-and-test:
-    # Вака дефинирано со коса црта (/), GitHub го прави поднасловот во менито
-    name: build & test / node ${{ matrix.node-version }}
+    name: build & test
     runs-on: ubuntu-latest
+    steps:
+      - name: Proverka
+        run: echo "Uspesno"
 
+  # Втора задача која ја содржи матрицата (Поднасловот)
+  matrix-job:
+    name: node ${{ matrix.node-version }}
+    needs: build-and-test # Ова ги поврзува да бидат едно под друго
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18, 20, 22]
-
     steps:
       - name: Kloniraj go kodot
         uses: actions/checkout@v4
-
       - name: Postavi Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Testiraj
-        run: node --version

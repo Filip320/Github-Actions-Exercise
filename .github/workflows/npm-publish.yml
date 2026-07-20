@@ -7,13 +7,13 @@ on:
 
 jobs:
   build-and-test:
-    name: Build & Test
-    runs-on: ${{ matrix.os }}
+    # Вака дефинирано со коса црта (/), GitHub го прави поднасловот во менито
+    name: build & test / node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18, 20, 22]
-        os: [ubuntu-latest, windows-latest] # Сега имаме 6 комбинации!
 
     steps:
       - name: Kloniraj go kodot

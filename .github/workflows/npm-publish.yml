@@ -6,26 +6,37 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # Прва главна задача (Главниот наслов)
+  # 1. Главното облаче од кое тргнува сè
   build-and-test:
     name: build & test
     runs-on: ubuntu-latest
     steps:
-      - name: Proverka
-        run: echo "Uspesno"
+      - name: Kloniraj go kodot
+        uses: actions/checkout@v4
+      - name: Izvrsi build
+        run: echo "Pocetniot build e uspesen!"
 
-  # Втора задача која ја содржи матрицата (Поднасловот)
-  matrix-job:
-    name: node ${{ matrix.node-version }}
-    needs: build-and-test # Ова ги поврзува да бидат едно под друго
+  # 2. Прва гранка: summary (зависи САМО од build & test)
+  summary:
+    name: summary
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generiraj izvestaj
+        run: echo "Generiranje na summary izvestaj..."
+
+  # 3. Втора гранка: matrix compatibility (со точно 1 job!)
+  matrix-compatibility:
+    name: matrix compatibility
+    needs: build-and-test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20] # Само една верзија -> точно 1 job во облачето
     steps:
-      - name: Kloniraj go kodot
-        uses: actions/checkout@v4
       - name: Postavi Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Proveri verzija
+        run: node --version

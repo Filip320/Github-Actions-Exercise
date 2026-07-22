@@ -25,11 +25,15 @@ jobs:
       - name: Generiraj izvestaj
         run: echo "Generiranje na summary izvestaj..."
 
-  # 3. Втора гранка: matrix compatibility (ТОЧНО 1 job)
+  # 3. Втора гранка: matrix compatibility (со матрица 18, 20, 22 спакувана во 1 job)
   matrix-compatibility:
     name: matrix compatibility
     needs: build-and-test
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [18, 20, 22]
     steps:
       - name: Kloniraj go kodot
         uses: actions/checkout@v4
@@ -37,7 +41,7 @@ jobs:
       - name: Postavi Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
 
       - name: Proveri verzija
         run: node --version

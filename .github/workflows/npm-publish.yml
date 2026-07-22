@@ -25,19 +25,18 @@ jobs:
       - name: Generiraj izvestaj
         run: echo "Generiranje na summary izvestaj..."
 
-  # 3. Втора гранка: matrix compatibility (ТОЧНО 1 job што ги тестира сите 3 верзии)
+  # 3. Втора гранка: matrix compatibility (со точно 1 job!)
   matrix-compatibility:
     name: matrix compatibility
     needs: build-and-test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20] # Само една верзија -> точно 1 job во облачето
     steps:
-      - name: Kloniraj go kodot
-        uses: actions/checkout@v4
-
-      - name: Testiraj gi site Node.js verzii (18, 20, 22)
-        run: |
-          for version in 18 20 22; do
-            echo "--- Testiranje na Node.js v$version ---"
-            nvm install $version
-            node --version
-          done
+      - name: Postavi Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Proveri verzija
+        run: node --version

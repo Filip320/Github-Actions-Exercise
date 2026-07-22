@@ -16,16 +16,17 @@ jobs:
       - name: Izvrsi build
         run: echo "Pocetniot build e uspesen!"
 
-  # 2. Прва гранка: summary
+  # 2. Прва гранка: summary (поврзана со линија од build & test)
   summary:
     name: summary
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Generiraj izvestaj
+        if: always() # Чекорот се извршува за да се креира summary извештај
         run: echo "Generiranje na summary izvestaj..."
 
-  # 3. Втора гранка: matrix compatibility (ТОЧНО СО ТВОЈОТ РЕДОСЛЕД)
+  # 3. Втора гранка: matrix compatibility (поврзана со посебна линија од build & test)
   matrix-compatibility:
     name: matrix compatibility
     needs: build-and-test
@@ -44,4 +45,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Proveri verzija
+        if: success() # Чекор со conditional 'if' внатре во steps
         run: node --version

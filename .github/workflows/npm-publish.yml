@@ -16,7 +16,7 @@ jobs:
       - name: Izvrsi build
         run: echo "Pocetniot build e uspesen!"
 
-  # 2. Прва гранка: summary (зависи САМО од build & test)
+  # 2. Прва гранка: summary
   summary:
     name: summary
     needs: build-and-test
@@ -25,13 +25,13 @@ jobs:
       - name: Generiraj izvestaj
         run: echo "Generiranje na summary izvestaj..."
 
-  # 3. Втора гранка: matrix compatibility (со матрица 18, 20, 22 спакувана во 1 job)
+  # 3. Втора гранка: matrix compatibility (ТОЧНО СО ТВОЈОТ РЕДОСЛЕД)
   matrix-compatibility:
     name: matrix compatibility
     needs: build-and-test
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      fail-fast: false
       matrix:
         node-version: [18, 20, 22]
     steps:
